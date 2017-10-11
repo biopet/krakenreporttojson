@@ -7,7 +7,7 @@ object KrakenReportToJsonTest extends BiopetTest {
   @Test
   def testNoArgs(): Unit = {
     intercept[IllegalArgumentException] {
-      ToolTemplate.main(Array())
+      KrakenReportToJson.main(Array())
     }
   }
 }
