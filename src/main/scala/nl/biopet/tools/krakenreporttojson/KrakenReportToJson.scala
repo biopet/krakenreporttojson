@@ -3,7 +3,7 @@ package nl.biopet.tools.krakenreporttojson
 import java.io.{File, PrintWriter}
 
 import nl.biopet.utils.tool.ToolCommand
-import nl.biopet.utils.config.Conversions
+import nl.biopet.utils.conversions
 import play.api.libs.json.Json
 
 import scala.collection.mutable
@@ -135,6 +135,6 @@ object KrakenReportToJson extends ToolCommand {
 
     val result = Map("unclassified" -> lines(0).toJSON(),
       "classified" -> lines(1).toJSON(withChildren = true))
-    Json.stringify(Conversions.mapToJson(result))
+    Json.stringify(conversions.mapToJson(result))
   }
 }
