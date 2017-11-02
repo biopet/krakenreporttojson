@@ -11,11 +11,11 @@ import scala.collection.mutable.ListBuffer
 import scala.io.Source
 import scala.util.matching.Regex
 
-object KrakenReportToJson extends ToolCommand {
+object KrakenReportToJson extends ToolCommand[Args] {
+  def emptyArgs: Args = Args()
+  def argsParser = new ArgsParser(toolName)
   def main(args: Array[String]): Unit = {
-    val parser = new ArgsParser(toolName)
-    val cmdArgs =
-      parser.parse(args, Args()).getOrElse(throw new IllegalArgumentException)
+    val cmdArgs = cmdArrayToArgs(args)
 
     logger.info("Start")
 
