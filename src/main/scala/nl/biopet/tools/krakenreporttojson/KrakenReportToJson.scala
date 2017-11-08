@@ -42,7 +42,9 @@ object KrakenReportToJson extends ToolCommand[Args] {
                        children: ListBuffer[KrakenHit]) {
     def toJSON(withChildren: Boolean = false): Map[String, Any] = {
       val childJSON =
-        if (withChildren) children.toList.map(entry => entry.toJSON(withChildren)) else List()
+        if (withChildren)
+          children.toList.map(entry => entry.toJSON(withChildren))
+        else List()
       Map(
         "name" -> taxonomyName,
         "taxid" -> taxonomyID,
@@ -69,13 +71,17 @@ object KrakenReportToJson extends ToolCommand[Args] {
     * @param skipNames Specify to skip names in the report output to reduce size of JSON
     * @return
     */
-  def parseLine(krakenRawHit: String, skipNames: Boolean): Map[Long, KrakenHit] = {
+  def parseLine(krakenRawHit: String,
+                skipNames: Boolean): Map[Long, KrakenHit] = {
     val values: Array[String] = krakenRawHit.stripLineEnd.split("\t")
 
     assert(values.length == 6)
 
     val scientificName: String = values(5)
-    val cladeLevel = spacePattern.findFirstIn(scientificName).getOrElse("").length / 2
+    val cladeLevel = spacePattern
+      .findFirstIn(scientificName)
+      .getOrElse("")
+      .length / 2
 
     if (cladeIDs.length <= cladeLevel + 1) {
       cladeIDs ++= mutable.ArrayBuffer.fill(10)(0L)
@@ -120,7 +126,9 @@ object KrakenReportToJson extends ToolCommand[Args] {
     lines = reader
       .getLines()
       .map(line => parseLine(line, skipNames))
-      .filter(p => (p.head._2.cladeSize > 0) || List(0L, 1L).contains(p.head._2.taxonomyID))
+      .filter(p =>
+        (p.head._2.cladeSize > 0) || List(0L, 1L).contains(
+          p.head._2.taxonomyID))
       .foldLeft(Map.empty[Long, KrakenHit])((a, b) => {
         a + b.head
       })
@@ -134,7 +142,7 @@ object KrakenReportToJson extends ToolCommand[Args] {
     })
 
     val result = Map("unclassified" -> lines(0).toJSON(),
-      "classified" -> lines(1).toJSON(withChildren = true))
+                     "classified" -> lines(1).toJSON(withChildren = true))
     Json.stringify(conversions.mapToJson(result))
   }
 }
