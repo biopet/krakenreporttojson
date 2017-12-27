@@ -6,9 +6,6 @@ import nl.biopet.utils.tool.{AbstractOptParser, ToolCommand}
 
 class ArgsParser(toolCommand: ToolCommand[Args])
     extends AbstractOptParser[Args](toolCommand) {
-  head(s"""
-          |$cmdName - Convert Kraken-report (full) output to JSON
-      """.stripMargin)
 
   opt[File]('i', "krakenreport") required () unbounded () valueName "<krakenreport>" action {
     (x, c) =>
