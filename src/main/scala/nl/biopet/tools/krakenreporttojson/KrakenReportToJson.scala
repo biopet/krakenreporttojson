@@ -17,6 +17,7 @@ object KrakenReportToJson extends ToolCommand[Args] {
   def main(args: Array[String]): Unit = {
     val cmdArgs = cmdArrayToArgs(args)
 
+    require(cmdArgs.krakenreport.exists(), "Kraken report file not found")
     logger.info("Start")
 
     val jsonString: String =
@@ -110,7 +111,7 @@ object KrakenReportToJson extends ToolCommand[Args] {
     * @return
     */
   def reportToJson(reportRaw: File, skipNames: Boolean): String = {
-    require(reportRaw.exists(),"Kraken report file can not be found.")
+
     val reader = Source.fromFile(reportRaw)
 
     /*
