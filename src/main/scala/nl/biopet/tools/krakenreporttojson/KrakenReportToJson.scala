@@ -110,6 +110,7 @@ object KrakenReportToJson extends ToolCommand[Args] {
     * @return
     */
   def reportToJson(reportRaw: File, skipNames: Boolean): String = {
+    require(reportRaw.exists(),"Kraken report file can not be found.")
     val reader = Source.fromFile(reportRaw)
 
     /*
