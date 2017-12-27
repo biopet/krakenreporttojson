@@ -150,7 +150,8 @@ object KrakenReportToJson extends ToolCommand[Args] {
 
   def descriptionText: String =
     """
-      |This tool converts the Kraken-report output into a JSON format. This allows the
+      |This tool converts the Kraken-report output into a JSON format. The tool can output
+      | to file or stdout. This allows the
       |report to be used in pipelines.
     """.stripMargin
 
@@ -166,6 +167,6 @@ object KrakenReportToJson extends ToolCommand[Args] {
        |${example("-i", "krakenreport")}
        |
        |To convert a krakenreport to an output file and skip the scientific names:
-       |${example("-i", "krakenreport", "-o", "krakenreport.json", "--skipnames")}
+       |${example("-i", "krakenreport", "-o", "krakenreport.json", "--skipnames=true")}
      """.stripMargin
 }
