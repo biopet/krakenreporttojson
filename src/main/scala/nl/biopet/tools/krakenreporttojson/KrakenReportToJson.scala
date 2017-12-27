@@ -188,6 +188,10 @@ object KrakenReportToJson extends ToolCommand[Args] {
        |${example("-i", "krakenreport")}
        |
        |To convert a krakenreport to an output file and skip the scientific names:
-       |${example("-i", "krakenreport", "-o", "krakenreport.json", "--skipnames=true")}
+       |${example("-i",
+                  "krakenreport",
+                  "-o",
+                  "krakenreport.json",
+                  "--skipnames=true")}
      """.stripMargin
 }

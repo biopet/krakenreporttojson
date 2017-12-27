@@ -30,7 +30,8 @@ class ArgsParser(toolCommand: ToolCommand[Args])
 
   opt[File]('i', "krakenreport") required () unbounded () valueName "<krakenreport>" action {
     (x, c) =>
-      c.copy(krakenreport = x) } text "Kraken report to generate stats from"
+      c.copy(krakenreport = x)
+  } text "Kraken report to generate stats from"
 
   opt[File]('o', "output") unbounded () valueName "<json>" action { (x, c) =>
     c.copy(outputJson = Some(x))
