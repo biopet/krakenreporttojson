@@ -145,4 +145,25 @@ object KrakenReportToJson extends ToolCommand[Args] {
                      "classified" -> lines(1).toJSON(withChildren = true))
     Json.stringify(conversions.mapToJson(result))
   }
+
+  def descriptionText: String =
+    """
+      |This tool converts the Kraken-report output into a JSON format. This allows the
+      |report to be used in pipelines.
+    """.stripMargin
+
+  def manualText: String =
+    s"""
+       |$toolName can write to an output file or stdout. It can optionally not include the
+       |scientific names in the output if the `--skipnames` flag is used.
+    """.stripMargin
+
+  def exampleText: String =
+    s"""
+       |To convert a krakenreport to a json on stdout:
+       |${example("-i", "krakenreport")}
+       |
+       |To convert a krakenreport to an output file and skip the scientific names:
+       |${example("-i", "krakenreport", "-o", "krakenreport.json", "--skipnames")}
+     """.stripMargin
 }
