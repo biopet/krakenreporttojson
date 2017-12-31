@@ -1,3 +1,24 @@
+/*
+ * Copyright (c) 2014 Sequencing Analysis Support Core - Leiden University Medical Center
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 package nl.biopet.tools.krakenreporttojson
 
 import java.io.{File, PrintWriter}
@@ -13,10 +34,11 @@ import scala.util.matching.Regex
 
 object KrakenReportToJson extends ToolCommand[Args] {
   def emptyArgs: Args = Args()
-  def argsParser = new ArgsParser(toolName)
+  def argsParser = new ArgsParser(this)
   def main(args: Array[String]): Unit = {
     val cmdArgs = cmdArrayToArgs(args)
 
+    require(cmdArgs.krakenreport.exists(), "Kraken report file not found")
     logger.info("Start")
 
     val jsonString: String =
@@ -110,6 +132,7 @@ object KrakenReportToJson extends ToolCommand[Args] {
     * @return
     */
   def reportToJson(reportRaw: File, skipNames: Boolean): String = {
+
     val reader = Source.fromFile(reportRaw)
 
     /*
@@ -145,4 +168,30 @@ object KrakenReportToJson extends ToolCommand[Args] {
                      "classified" -> lines(1).toJSON(withChildren = true))
     Json.stringify(conversions.mapToJson(result))
   }
+
+  def descriptionText: String =
+    """
+      |This tool converts the Kraken-report output into a JSON format. The tool can output
+      | to file or stdout. This allows the
+      |report to be used in pipelines.
+    """.stripMargin
+
+  def manualText: String =
+    s"""
+       |$toolName can write to an output file or stdout. It can optionally not include the
+       |scientific names in the output if the `--skipnames` flag is used.
+    """.stripMargin
+
+  def exampleText: String =
+    s"""
+       |To convert a krakenreport to a json on stdout:
+       |${example("-i", "krakenreport")}
+       |
+       |To convert a krakenreport to an output file and skip the scientific names:
+       |${example("-i",
+                  "krakenreport",
+                  "-o",
+                  "krakenreport.json",
+                  "--skipnames=true")}
+     """.stripMargin
 }
