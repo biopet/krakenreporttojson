@@ -37,8 +37,7 @@ class ArgsParser(toolCommand: ToolCommand[Args])
     c.copy(outputJson = Some(x))
   } text "File to write output to, if not supplied output go to stdout"
 
-  opt[Boolean]('n', "skipnames") valueName "<skipnames>" action {
-    (x, c) =>
-      c.copy(skipNames = x)
+  opt[Boolean]('n', "skipnames") valueName "<skipnames>" action { (x, c) =>
+    c.copy(skipNames = x)
   } text "Don't report the scientific name of the taxon."
 }
